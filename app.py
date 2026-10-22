@@ -66,8 +66,9 @@ if uploaded_file is not None:
     if st.button('Analyze Leaf Health'):
         with st.spinner('Analyzing leaf features through Custom CNN layers...'):
             
-            # AUTOMATED GUARD: Block non-leaf objects (e.g., blue shirts where blue is dominant, or colorless/gray non-plant items)
-            if (b_mean > g_mean and b_mean > r_mean) or (g_mean < 30 and r_mean < 30 and b_mean < 30):
+            # STRICT GUARD: Real leaves must have Green as their dominant color channel. 
+            # If green is not higher than both red and blue, it gets blocked immediately.
+            if not (g_mean > r_mean and g_mean > b_mean):
                 st.error("❌ **Invalid Image Detected!**")
                 st.warning("The uploaded image does not appear to be a plant leaf. Please upload a clear photograph of a plant leaf.")
             else:
