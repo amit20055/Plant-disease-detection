@@ -54,7 +54,6 @@ if uploaded_file is not None:
     img_resized = image_display.resize((128, 128))
     rgb_array = np.array(img_resized)
     
-    # Calculate RGB means to check for organic plant color characteristics
     r_mean = np.mean(rgb_array[:, :, 0])
     g_mean = np.mean(rgb_array[:, :, 1])
     b_mean = np.mean(rgb_array[:, :, 2])
@@ -67,9 +66,8 @@ if uploaded_file is not None:
     if st.button('Analyze Leaf Health'):
         with st.spinner('Analyzing leaf features through Custom CNN layers...'):
             
-            # AUTOMATED GUARD: Check if image lacks natural foliage color balance (e.g., human clothing, skin, indoor objects)
-            # Leaves naturally exhibit distinct color ratios compared to random clothing or skin tones.
-            if g_mean < 40 or (abs(r_mean - g_mean) < 5 and abs(g_mean - b_mean) < 5):
+            # AUTOMATED GUARD: Block non-leaf objects (e.g., blue shirts where blue is dominant, or colorless/gray non-plant items)
+            if (b_mean > g_mean and b_mean > r_mean) or (g_mean < 30 and r_mean < 30 and b_mean < 30):
                 st.error("❌ **Invalid Image Detected!**")
                 st.warning("The uploaded image does not appear to be a plant leaf. Please upload a clear photograph of a plant leaf.")
             else:
@@ -86,6 +84,6 @@ if uploaded_file is not None:
                 
                 if "healthy" in detected_disease.lower():
                     st.balloons()
-                    st.success("🟢 The leaf appears healthy! No signs of disease detected system-wide.")
+                    st.success("🟢 The leaf appears healthy! No signs of disease detected.")
                 else:
                     st.warning("⚠️ Disease detected! Recommended action: Isolate the affected plant and check agricultural advisory guidelines.")
