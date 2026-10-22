@@ -3,7 +3,6 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
 from PIL import Image
-import os
 
 # 1. Page Configuration
 st.set_page_config(
@@ -20,9 +19,24 @@ def load_model():
 with st.spinner("Loading Custom CNN Model... Please wait."):
     model = load_model()
 
-# 3. Automatically Load Class Labels from PlantVillage Directory
-data_dir = 'PlantVillage'
-class_labels = sorted(os.listdir(data_dir))
+# 3. Predefined Class Labels (Matches your trained model classes alphabetically)
+class_labels = [
+    'Pepper__bell___Bacterial_spot',
+    'Pepper__bell___healthy',
+    'Potato___Early_blight',
+    'Potato___Late_blight',
+    'Potato___healthy',
+    'Tomato_Bacterial_spot',
+    'Tomato_Early_blight',
+    'Tomato_Late_blight',
+    'Tomato_Leaf_Mold',
+    'Tomato_Septoria_leaf_spot',
+    'Tomato_Spider_mites_Two_spotted_spider_mite',
+    'Tomato__Target_Spot',
+    'Tomato__Tomato_YellowLeaf__Curl_Virus',
+    'Tomato__Tomato_mosaic_virus',
+    'Tomato_healthy'
+]
 
 # 4. Web App UI Header
 st.title("🌱 Automated Plant Disease Detection")
